@@ -24,9 +24,9 @@ async def webhook(request: Request):
     """Nhận webhook từ TradingView."""
     try:
          """Gửi tin nhắn tự động khi ứng dụng khởi động."""
-    message = "🚀 FastAPI bot has started successfully!"
-    send_telegram_message(message)
-    print(f"Sent message: {message}")
+        message = "🚀 FastAPI bot has started successfully!"
+        send_telegram_message(message)
+        print(f"Sent message: {message}")
         data = await request.json()
         message = data.get("message", "No message provided")
         
