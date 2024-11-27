@@ -3,8 +3,8 @@ import requests
 
 app = FastAPI()
 
-TELEGRAM_TOKEN = "your_bot_token"  # Thay bằng token Telegram bot của bạn
-CHAT_ID = "your_chat_id"          # Thay bằng chat_id của bạn
+TELEGRAM_TOKEN = "7636088878:AAEPClIL7zPeVHbQ6ZnmsSYjSG3Fa4KNST8"  # Thay bằng token Telegram bot của bạn
+CHAT_ID = "1830350914"          # Thay bằng chat_id của bạn
 
 def send_telegram_message(message: str):
     """Gửi tin nhắn đến Telegram."""
