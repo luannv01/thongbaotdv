@@ -28,7 +28,7 @@ async def webhook(request: Request):
         send_telegram_message(message)
         print(f"Sent message: {message}")
         data = await request.json()
-        message = data.get("message", "No message provided")
+      '''  message = data.get("message", "No message provided")'''
         
         return {"status": "success"}
     except Exception as e:
