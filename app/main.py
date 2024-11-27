@@ -17,6 +17,17 @@ def send_telegram_message(message: str):
     response = requests.post(url, json=payload)
     return response.json()
 
+@app.on_event("startup")
+async def startup_event():
+    """Gửi tin nhắn tự động khi ứng dụng khởi động."""
+    message = "🚀 FastAPI bot has started successfully!"
+    send_telegram_message(message)
+    print(f"Sent message: {message}")
+
+@app.get("/")
+async def read_root():
+    return {"message": "Hello, World!"}
+    
 @app.post("/webhook")
 async def webhook(request: Request):
     """Nhận webhook từ TradingView."""
