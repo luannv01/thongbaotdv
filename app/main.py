@@ -22,6 +22,8 @@ async def webhook(request: Request):
     """Nhận webhook từ TradingView."""
     try:
         data = await request.json()
+         # In ra log toàn bộ dữ liệu nhận được từ TradingView
+        print("Received webhook data:", data)
         message = data.get("message", "No message provided")
         send_telegram_message(f"📢 <b>TradingView Alert</b>\n\n{message}")
         return {"status": "success"}
