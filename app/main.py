@@ -18,19 +18,28 @@ def send_telegram_message(message: str):
     return response.json()
 
 
-    
+from fastapi import FastAPI, Request
+
+app = FastAPI()
+
 @app.post("/webhook")
 async def webhook(request: Request):
     """Nhận webhook từ TradingView."""
     try:
-         """Gửi tin nhắn tự động khi ứng dụng khởi động."""
+        # Gửi tin nhắn tự động khi ứng dụng khởi động
         message = "🚀 FastAPI bot has started successfully!"
         send_telegram_message(message)
         print(f"Sent message: {message}")
+
+        # Lấy dữ liệu JSON từ yêu cầu
         data = await request.json()
-        print(f"Sent message: {data}")
-      '''  message = data.get("message", "No message provided")'''
-        
+        print(f"Received data: {data}")
+
+        # Xử lý message từ dữ liệu JSON
+        message = data.get("message", "No message provided")
+        print(f"Message from request: {message}")
+
         return {"status": "success"}
     except Exception as e:
+        # Xử lý lỗi và trả về phản hồi lỗi
         return {"status": "error", "message": str(e)}
