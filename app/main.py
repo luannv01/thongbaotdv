@@ -30,15 +30,19 @@ app = FastAPI()
 async def webhook(request: Request):
     """Nhận webhook từ TradingView."""
     try:
-        # Kiểm tra và lấy dữ liệu JSON từ yêu cầu
-        if request.headers.get("Content-Type") != "application/json":
-            raise ValueError("Content-Type must be application/json")
+        # Lấy header Content-Type
+        content_type = request.headers.get("Content-Type", "").lower()
+        print(f"Content-Type: {content_type}")
 
+        # Kiểm tra Content-Type
+        if "application/json" not in content_type:
+            print("Warning: Content-Type is not application/json. Attempting to parse as JSON.")
+        
         # Lấy dữ liệu thô từ body của yêu cầu
         raw_data = await request.body()
-        print(f"Raw data received: {raw_data.decode('utf-8')}")  # Hiển thị dữ liệu thô
+        print(f"Raw data received: {raw_data.decode('utf-8')}")
 
-        # Chuyển đổi dữ liệu thô sang JSON
+        # Thử chuyển đổi dữ liệu thô sang JSON
         try:
             data = await request.json()
         except Exception:
@@ -47,9 +51,9 @@ async def webhook(request: Request):
         if not data:
             raise ValueError("Request body is empty or not valid JSON")
 
-        print(f"Parsed JSON: {data}")  # Hiển thị JSON đã phân tích
+        print(f"Parsed JSON: {data}")
 
-        # Lấy thông tin tin nhắn từ JSON
+        # Xử lý tin nhắn
         message = data.get("message", "No message provided")
         print(f"Message to send: {message}")
 
@@ -59,5 +63,5 @@ async def webhook(request: Request):
 
         return {"status": "success", "message_sent": message}
     except Exception as e:
-        print(f"Error: {e}")  # Log lỗi chi tiết
+        print(f"Error: {e}")
         return {"status": "error", "message": str(e)}
