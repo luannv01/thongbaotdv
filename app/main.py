@@ -25,7 +25,6 @@ def send_telegram_message(message: str):
 from fastapi import FastAPI, Request
 
 app = FastAPI()
-
 @app.post("/webhook")
 async def webhook(request: Request):
     """Nhận webhook từ TradingView."""
@@ -34,18 +33,15 @@ async def webhook(request: Request):
         content_type = request.headers.get("Content-Type", "").lower()
         print(f"Content-Type: {content_type}")
 
-        # Kiểm tra Content-Type
-        if "application/json" not in content_type:
-            print("Warning: Content-Type is not application/json. Attempting to parse as JSON.")
-        
         # Lấy dữ liệu thô từ body của yêu cầu
         raw_data = await request.body()
-        print(f"Raw data received: {raw_data.decode('utf-8')}")
+        print(f"Raw data received: {raw_data.decode('utf-8')}")  # Hiển thị dữ liệu thô nhận được
 
         # Thử chuyển đổi dữ liệu thô sang JSON
         try:
             data = await request.json()
-        except Exception:
+        except Exception as e:
+            print(f"Error parsing JSON: {e}")
             raise ValueError("Invalid JSON format")
 
         if not data:
@@ -53,7 +49,7 @@ async def webhook(request: Request):
 
         print(f"Parsed JSON: {data}")
 
-        # Xử lý tin nhắn
+        # Lấy thông tin tin nhắn từ JSON
         message = data.get("message", "No message provided")
         print(f"Message to send: {message}")
 
